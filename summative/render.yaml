@@ -1,0 +1,11 @@
+# render.yaml
+services:
+  - type: web
+    name: nitrogen-predictor
+    runtime: python
+    buildCommand: ./build.sh
+    startCommand: uvicorn API.prediction:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+    plan: free  # Remove for paid plans
