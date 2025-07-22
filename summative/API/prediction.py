@@ -76,6 +76,7 @@ async def predict_nitrogen(request: PredictionRequest):
 
         # Predict
         prediction = model.predict(scaled_features)
+        prediction_value = float(prediction[0])  # Convert numpy.float64 to Python float
         
         return {
             "predicted_nitrogen": round(float(prediction[0]), 2),
