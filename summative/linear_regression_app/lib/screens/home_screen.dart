@@ -135,33 +135,33 @@ class _HomePageState extends State<HomePage> {
                               _pController,
                               'Phosphorus (P)',
                               'mg/kg',
-                              '5 - 145',
+                              '0 - 150',
                             ),
                             _buildInputField(
                               _kController,
                               'Potassium (K)',
                               'mg/kg',
-                              '5 - 200',
+                              '0 - 200',
                             ),
                             _buildInputField(
                               _tempController,
                               'Temperature',
                               '°C',
-                              '10 - 45',
+                              '-20 - 50',
                             ),
                             _buildInputField(
                               _humidityController,
                               'Humidity',
                               '%',
-                              '14 - 99',
+                              '0 - 100',
                             ),
                             _buildInputField(_phController, 'pH Level', '',
-                                '4.5 - 9.0'),
+                                '0 - 14'),
                             _buildInputField(
                               _rainfallController,
                               'Rainfall',
                               'mm',
-                              '0 - 300',
+                              '0 - 500',
                             ),
                           ],
                         ),
@@ -244,8 +244,40 @@ class _HomePageState extends State<HomePage> {
     TextEditingController controller,
     String label,
     String unit,
-    [String? range]
+    String rangeHint, // Added to dynamically show the range
   ) {
+    // Define validation rules for each field
+    double? minValue;
+    double? maxValue;
+
+    // Set min/max based on the field type
+    switch (label) {
+      case 'Phosphorus (P)':
+        minValue = 0.0;
+        maxValue = 150.0;
+        break;
+      case 'Potassium (K)':
+        minValue = 0.0;
+        maxValue = 200.0;
+        break;
+      case 'Temperature':
+        minValue = -20.0;
+        maxValue = 50.0;
+        break;
+      case 'Humidity':
+        minValue = 0.0;
+        maxValue = 100.0;
+        break;
+      case 'pH Level':
+        minValue = 0.0;
+        maxValue = 14.0;
+        break;
+      case 'Rainfall':
+        minValue = 0.0;
+        maxValue = 500.0;
+        break;
+    }
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: TextFormField(
@@ -256,7 +288,7 @@ class _HomePageState extends State<HomePage> {
           labelStyle: TextStyle(color: Colors.green[700]),
           suffixText: unit,
           suffixStyle: TextStyle(color: Colors.green[700]),
-          hintText: range != null ? 'Range: $range' : null,
+          hintText: 'Range: $rangeHint',
           hintStyle: TextStyle(color: Colors.grey[600]),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -274,9 +306,24 @@ class _HomePageState extends State<HomePage> {
           fillColor: Colors.green[50],
         ),
         validator: (value) {
-          if (value!.isEmpty) return 'Required field';
-          if (double.tryParse(value) == null) return 'Enter valid number';
-          return null;
+          if (value == null || value.isEmpty) {
+            return 'Required field';
+          }
+          
+          final parsedValue = double.tryParse(value);
+          if (parsedValue == null) {
+            return 'Enter a valid number';
+          }
+
+          if (minValue != null && parsedValue < minValue) {
+            return 'Must be ≥ $minValue';
+          }
+
+          if (maxValue != null && parsedValue > maxValue) {
+            return 'Must be ≤ $maxValue';
+          }
+
+          return null; // Valid
         },
       ),
     );
@@ -301,6 +348,13 @@ class _HomePageState extends State<HomePage> {
           context,
           MaterialPageRoute(
             builder: (context) => ResultPage(prediction: result),
+          ),
+        );
+      } on FormatException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Invalid input format'),
+            backgroundColor: Colors.red[700],
           ),
         );
       } catch (e) {

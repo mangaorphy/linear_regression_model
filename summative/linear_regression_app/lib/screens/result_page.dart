@@ -101,7 +101,7 @@ class ResultPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 12,
                             fontStyle: FontStyle.italic,
-                            color: Colors.grey[600],
+                            color: Colors.red,
                           )),
                     ],
                   ),

@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Literal
 import joblib
 import numpy as np
 import os
@@ -27,12 +28,12 @@ model, scaler, label_mapping = load_models()
 
 # Input data model
 class PredictionRequest(BaseModel):
-    P: float
-    K: float
-    temperature: float
-    humidity: float
-    ph: float
-    rainfall: float
+    P: float = Field(..., ge=0, le=150, description="Phosphorus (P) in mg/kg (0-150)")
+    K: float = Field(..., ge=0, le=200, description="Potassium (K) in mg/kg (0-200)")
+    temperature: float = Field(..., ge=-20, le=50, description="Temperature in °C (-20 to 50)")
+    humidity: float = Field(..., ge=0, le=100, description="Humidity in % (0-100)")
+    ph: float = Field(..., ge=0, le=14, description="Soil pH (0-14)")
+    rainfall: float = Field(..., ge=0, le=500, description="Rainfall in mm (0-500)")
     crop_type: str
 
     class Config:
@@ -76,7 +77,6 @@ async def predict_nitrogen(request: PredictionRequest):
 
         # Predict
         prediction = model.predict(scaled_features)
-        prediction_value = float(prediction[0])  # Convert numpy.float64 to Python float
         
         return {
             "predicted_nitrogen": round(float(prediction[0]), 2),
