@@ -6,6 +6,9 @@
 
 **For this project, I have developed an agricultural application that leverages a Random Forest regression model to optimize crop nutrition. The system analyzes key environmental and soil parameters—including temperature, humidity, pH levels, rainfall, potassium, and phosphorus—to provide precise nitrogen recommendations for specific crops.**
 
+## Youtube Video Demonstration
+![Watch the video](https://youtu.be/3xc1sLxXGXo?si=2LG8oqDkgeZIHkJA)
+
 
 ## Images of the App
 ![Crop Recommendation App](summative/images/home.jpeg)
