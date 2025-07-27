@@ -1,8 +1,17 @@
 ## My Mission is to empower farmers in Africa by intergrating technology and AI through developing an application that will help farmers quickily identify plant diseases, enabling them to take timely action to reduce yield losses and significantly boost their harvests. 
 
+## Source of The Dataset:
+
+[Data source](https://www.kaggle.com/datasets/atharvaingle/crop-recommendation-dataset?select=Crop_recommendation.csv)
+
 **For this project, I have developed an agricultural application that leverages a Random Forest regression model to optimize crop nutrition. The system analyzes key environmental and soil parameters—including temperature, humidity, pH levels, rainfall, potassium, and phosphorus—to provide precise nitrogen recommendations for specific crops.**
 
-## 🌐 Try the Model Online (Hosted on Render)
+
+## Images of the App
+![Crop Recommendation App](summative/images/home.jpeg)
+![Crop Recommendation App](summative/images/result.jpeg)
+
+## Try the Model Online (Hosted on Render)
 
 🔗 [Access the API here](https://linear-regression-model-irc0.onrender.com/docs )
 

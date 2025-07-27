@@ -1,11 +1,21 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Literal
 import joblib
 import numpy as np
 import os
 
 app = FastAPI(title="Nitrogen Prediction API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"], 
+    allow_headers=["*"],
+)
+
 
 # Load models at startup
 def load_models():
@@ -37,7 +47,7 @@ class PredictionRequest(BaseModel):
     crop_type: str
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "P": 42.0,
                 "K": 43.0,
